@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serviceapp/controller/auth_controller.dart';
 import 'package:serviceapp/firebase_options.dart';
-import 'package:serviceapp/view/detail_page/detail_page.dart';
+import 'package:serviceapp/view/auth/auth.dart';
+import 'package:serviceapp/view/detail_page/cleaning_services.dart';
+import 'package:serviceapp/view/detail_page/my_account.dart';
+import 'package:serviceapp/view/detail_page/cart.dart';
+import 'package:serviceapp/view/home/hnew.dart';
 import 'package:serviceapp/view/home/home.dart';
 import 'package:serviceapp/view/widgets/splash_screen.dart';
 
@@ -30,7 +34,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const CleaningServicesDetailScreen(),
+        debugShowCheckedModeBanner: false,
+        home: AuthenticationScreen(),
       ),
     );
   }

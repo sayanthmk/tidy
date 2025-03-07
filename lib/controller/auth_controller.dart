@@ -69,7 +69,6 @@ class AuthService with ChangeNotifier {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          log("Auto verification completed");
           await _auth.signInWithCredential(credential);
           _user = _auth.currentUser;
           notifyListeners();
