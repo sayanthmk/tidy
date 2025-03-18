@@ -31,8 +31,6 @@ class LoginPagePhoneAuth extends StatelessWidget {
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: otpController,
-                          // prefixIcon: const Icon(Icons.lock),
-                          // labelText: 'OTP',
                           keyboardType: TextInputType.number,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
@@ -45,21 +43,11 @@ class LoginPagePhoneAuth extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 20),
-
-                        // MyCustomButton(
-                        //   backgroundcolor: AppColors.primary,
-                        //   textcolor: AppColors.white,
-                        //   text: 'Submit',
-                        //   onPressed: () {
-                        //     authProvider.verifyOTP(context, otpController);
-                        //   },
-                        // ),
-
                         TextButton(
                             onPressed: () {
                               authProvider.verifyOTP(context, otpController);
                             },
-                            child: Text('Get OTP'))
+                            child: const Text('Get OTP'))
                       ],
                     )
                   : Column(
@@ -75,8 +63,6 @@ class LoginPagePhoneAuth extends StatelessWidget {
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: phoneNumController,
-                          // prefixIcon: const Icon(Icons.phone_android),
-                          // labelText: 'Phone',
                           keyboardType: TextInputType.phone,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
@@ -94,15 +80,7 @@ class LoginPagePhoneAuth extends StatelessWidget {
                             onPressed: () {
                               authProvider.sendOTP(context, phoneNumController);
                             },
-                            child: Text('Get OTP'))
-                        // MyCustomButton(
-                        //   backgroundcolor: AppColors.primary,
-                        //   textcolor: AppColors.white,
-                        //   text: 'Get OTP',
-                        //   onPressed: () {
-                        //     authProvider.sendOTP(context, phoneNumController);
-                        //   },
-                        // ),
+                            child: const Text('Get OTP'))
                       ],
                     ),
             ],

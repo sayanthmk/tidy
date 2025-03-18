@@ -38,13 +38,13 @@ class CustomButton extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 6.0,
-              offset: const Offset(0, 3),
-            ),
-          ],
+          // boxShadow: [
+          // BoxShadow(
+          //   color: Colors.black.withOpacity(0.1),
+          //   blurRadius: 6.0,
+          //   offset: const Offset(0, 3),
+          // ),
+          // ],
           color: gradient == null ? color : null,
           gradient: gradient,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -53,14 +53,13 @@ class CustomButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-// Image.asset(image),
-
             if (icon != null) ...[
-              Icon(
-                icon,
-                color: textColor,
-                size: fontSize,
-              ),
+              Image.asset("assets/google _icon.png"),
+              // Icon(
+              //   icon,
+              //   color: textColor,
+              //   size: fontSize,
+              // ),
               const SizedBox(width: 8.0),
             ],
             Text(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serviceapp/controller/auth_controller.dart';
-import 'package:serviceapp/view/home/home.dart';
+import 'package:serviceapp/view/pages/home/home_page.dart';
 import 'package:serviceapp/view/auth/phone_auth.dart';
+import 'package:serviceapp/view/widgets/bottom_navbar.dart';
 import 'package:serviceapp/view/widgets/button.dart';
 
 class AuthenticationScreen extends StatelessWidget {
@@ -13,7 +14,6 @@ class AuthenticationScreen extends StatelessWidget {
     final authService = Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
-      // appBar: AppBar(title: const Text("Login")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,12 +35,12 @@ class AuthenticationScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomePage()),
+                              builder: (context) => TestPageBottom()),
                         );
                       }
                     },
-                    color: Colors.white30,
-                    textColor: Colors.white,
+                    color: Colors.grey[200]!,
+                    textColor: Colors.black,
                     borderRadius: 12.0,
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     fontSize: 16.0,
@@ -52,14 +52,11 @@ class AuthenticationScreen extends StatelessWidget {
                   CustomButton(
                     text: "Phone",
                     onTap: () async {
-                      final user = await authService.signInWithGoogle();
-                      if (user != null) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPagePhoneAuth()),
-                        );
-                      }
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPagePhoneAuth()),
+                      );
                     },
                     color: Colors.green,
                     textColor: Colors.white,
@@ -79,28 +76,3 @@ class AuthenticationScreen extends StatelessWidget {
     );
   }
 }
-
-
-      // ElevatedButton(
-            //   onPressed: () async {
-            //     final user = await authService.signInWithGoogle();
-            //     if (user != null) {
-            //       Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => const HomePage()),
-            //       );
-            //     }
-            //   },
-            //   child: const Text("Sign in with Google"),
-            // ),
-
-               // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.pushReplacement(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) => const LoginPagePhoneAuth()),
-            //     );
-            //   },
-            //   child: const Text("Sign in with Phone"),
-            // ),

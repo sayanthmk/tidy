@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serviceapp/controller/auth_controller.dart';
 import 'package:serviceapp/view/auth/auth.dart';
-import 'package:serviceapp/view/home/home.dart';
+import 'package:serviceapp/view/widgets/bottom_navbar.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
       if (isLoggedIn) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => TestPageBottom()),
         );
       } else {
         Navigator.pushReplacement(

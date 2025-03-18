@@ -10,4 +10,8 @@ class TidyColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
+
+  static const Color profilesecondaryColor = Color(0xFFF5F9FF);
+  static const Color lightgreen = Color(0xFFF5F9FF);
+  static const Color buttonOrange = Color.fromARGB(255, 255, 87, 34);
 }

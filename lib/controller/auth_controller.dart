@@ -1,9 +1,10 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:serviceapp/view/home/home.dart';
+import 'package:serviceapp/view/pages/home/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService with ChangeNotifier {
@@ -56,12 +57,21 @@ class AuthService with ChangeNotifier {
 
   Future<bool> checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? hotelId = prefs.getString('hotelId');
+    String? hotelId = prefs.getString('userId');
 
     return _auth.currentUser != null && hotelId != null;
   }
 
   void sendOTP(BuildContext context, TextEditingController phoneNumbers) async {
+    if (phoneNumbers.text.isEmpty ||
+        !RegExp(r'^[0-9]{10}$').hasMatch(phoneNumbers.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Please enter a valid 10-digit phone number")),
+      );
+      return;
+    }
+
     String phoneNumber = '+91${phoneNumbers.text.trim()}';
     log("Sending OTP to: $phoneNumber");
 
@@ -69,26 +79,43 @@ class AuthService with ChangeNotifier {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _auth.signInWithCredential(credential);
-          _user = _auth.currentUser;
-          notifyListeners();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Auto verification successful!")),
-          );
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const HomePage()));
+          try {
+            await _auth.signInWithCredential(credential);
+            _user = _auth.currentUser;
+
+            Future.microtask(() {
+              notifyListeners();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Auto verification successful!")),
+              );
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            });
+          } catch (e) {
+            log("Auto verification error: $e");
+            Future.microtask(() {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Auto verification failed: $e")),
+              );
+            });
+          }
         },
         verificationFailed: (FirebaseAuthException e) {
           log("Verification Failed: ${e.message}");
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Verification failed: ${e.message}")),
-          );
+          Future.microtask(() {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Verification failed: ${e.message}")),
+            );
+          });
         },
         codeSent: (String verificationId, int? resendToken) {
           log("OTP Sent to $phoneNumber");
           this.verificationId = verificationId;
           showOtpField = true;
-          notifyListeners();
+
+          Future.microtask(() {
+            notifyListeners();
+          });
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           log("Auto retrieval timeout");
@@ -127,7 +154,7 @@ class AuthService with ChangeNotifier {
         const SnackBar(content: Text("OTP Verified Successfully!")),
       );
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     } on FirebaseAuthException catch (e) {
       log("OTP Verification Failed: ${e.message}");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -136,62 +163,3 @@ class AuthService with ChangeNotifier {
     }
   }
 }
-
-
-
-
- // Stream<User?> get user => _auth.authStateChanges();
-  // User? _newuser;
-  // User? get newuser => _newuser;
-
-  // Future<User?> signInWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     final result = await _auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     notifyListeners();
-  //     return result.user;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
-
-  // Future<User?> createUserWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     final result = await _auth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //     notifyListeners();
-  //     return result.user;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
-    // Future<void> signInWithPhone(
-  //     String phoneNumber,
-  //     Function(PhoneAuthCredential) verificationCompleted,
-  //     Function(FirebaseAuthException) verificationFailed,
-  //     Function(String, int?) codeSent,
-  //     Function(String) codeAutoRetrievalTimeout) async {
-  //   await _auth.verifyPhoneNumber(
-  //     phoneNumber: phoneNumber,
-  //     verificationCompleted: verificationCompleted,
-  //     verificationFailed: verificationFailed,
-  //     codeSent: codeSent,
-  //     codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-  //   );
-  // }
-
-  // Future<User?> signInWithPhoneCredential(
-  //     PhoneAuthCredential credential) async {
-  //   try {
-  //     final result = await _auth.signInWithCredential(credential);
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     await prefs.setString('userId', result.user!.uid);
-
-  //     notifyListeners();
-  //     return result.user;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }

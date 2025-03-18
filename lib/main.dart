@@ -2,13 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serviceapp/controller/auth_controller.dart';
+import 'package:serviceapp/controller/bottm_nav_controller.dart';
+import 'package:serviceapp/controller/cart_items_controller.dart';
 import 'package:serviceapp/firebase_options.dart';
-import 'package:serviceapp/view/auth/auth.dart';
-import 'package:serviceapp/view/detail_page/cleaning_services.dart';
-import 'package:serviceapp/view/detail_page/my_account.dart';
-import 'package:serviceapp/view/detail_page/cart.dart';
-import 'package:serviceapp/view/home/hnew.dart';
-import 'package:serviceapp/view/home/home.dart';
+import 'package:serviceapp/view/auth/phone_auth.dart';
+import 'package:serviceapp/view/pages/clean_service.dart/cleaning_services.dart';
+import 'package:serviceapp/view/widgets/bottom_navbar.dart';
+import 'package:serviceapp/unused/car.dart';
+import 'package:serviceapp/view/widgets/phone_auth.dart';
 import 'package:serviceapp/view/widgets/splash_screen.dart';
 
 void main() async {
@@ -16,6 +17,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // debugPaintSizeEnabled = true;
   runApp(const MyApp());
 }
 
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => ServiceItemProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -35,7 +39,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: AuthenticationScreen(),
+        home: const TestPageBottom(),
       ),
     );
   }
